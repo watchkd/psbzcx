@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>铁未成器 · 八字成象</title>
+<meta name="description" content="八字成象报告：一柄未开刃的刀，一条不来舟的江。画面、题诗与白话解析。">
+<style>
+  :root{
+    --paper:#f2ece0; --paper-2:#f9f5ec; --paper-3:#ece3d2;
+    --ink:#241f1b; --ink-2:#57504a; --ink-3:#8d8378;
+    --zhu:#a5382c; --qing:#43605a; --zhe:#8a5b3a;
+    --line:rgba(36,31,27,.14); --line-soft:rgba(36,31,27,.08);
+    --serif:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+    --kai:"Kaiti SC","STKaiti","KaiTi","楷体",var(--serif);
+    --maxw:820px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--ink); background:var(--paper);
+    font-family:var(--serif); font-size:17px; line-height:1.95;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1100px 600px at 15% -8%, rgba(255,255,255,.75), transparent 62%),
+      radial-gradient(900px 700px at 92% 8%, rgba(196,175,140,.22), transparent 60%),
+      radial-gradient(800px 800px at 50% 115%, rgba(140,110,70,.12), transparent 65%);
+    background-attachment:fixed;
+  }
+  ::selection{background:rgba(165,56,44,.16)}
+
+  /* 进度条 */
+  #bar{position:fixed; top:0; left:0; height:2px; width:0; background:var(--zhu); z-index:60; transition:width .1s linear}
+
+  /* 顶栏 */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:50; height:58px;
+    display:flex; align-items:center; gap:18px;
+    padding:0 clamp(18px,4vw,44px);
+    background:rgba(242,236,224,0);
+    border-bottom:1px solid transparent;
+    transition:background .35s, border-color .35s, backdrop-filter .35s;
+  }
+  .topbar.on{background:rgba(244,238,227,.86); border-bottom-color:var(--line-soft); backdrop-filter:blur(10px) saturate(1.1)}
+  .brand{font-family:var(--kai); font-size:17px; letter-spacing:.22em; white-space:nowrap; opacity:0; transition:opacity .35s}
+  .topbar.on .brand{opacity:1}
+  .nav{margin-left:auto; display:flex; align-items:center; gap:22px}
+  .nav a{
+    color:var(--ink-2); text-decoration:none; font-size:13px; letter-spacing:.24em;
+    padding:4px 0; position:relative;
+  }
+  .nav a::after{content:""; position:absolute; left:0; right:100%; bottom:0; height:1px; background:var(--zhu); transition:right .3s}
+  .nav a:hover{color:var(--ink)}
+  .nav a:hover::after{right:0}
+  .icon-btn{
+    border:1px solid var(--line); background:transparent; color:var(--ink-2);
+    width:34px; height:34px; border-radius:50%; cursor:pointer; display:grid; place-items:center;
+    transition:.25s; font-family:var(--serif);
+  }
+  .icon-btn:hover{border-color:var(--zhu); color:var(--zhu)}
+  .icon-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.4}
+
+  main{max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,5vw,28px) 40px}
+
+  /* 封面 */
+  .hero{padding:clamp(110px,17vh,170px) 0 clamp(34px,6vw,56px); text-align:center}
+  .kicker{font-size:12px; letter-spacing:.42em; color:var(--zhe); text-indent:.42em}
+  h1{
+    font-family:var(--kai); font-weight:400;
+    font-size:clamp(46px,9.2vw,80px); letter-spacing:.14em; text-indent:.14em;
+    margin:22px 0 8px; line-height:1.18;
+  }
+  .sub{font-size:clamp(14px,2.6vw,16px); color:var(--ink-2); letter-spacing:.16em; margin:0}
+  .rule{width:1px; height:46px; background:linear-gradient(180deg,transparent,var(--line),transparent); margin:26px auto}
+  .meta{font-size:12px; letter-spacing:.28em; color:var(--ink-3); text-indent:.28em}
+
+  /* 章节 */
+  section{padding:clamp(48px,8vw,86px) 0 0}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:26px}
+  .sec-no{font-family:var(--kai); font-size:13px; color:var(--zhu); letter-spacing:.2em}
+  .sec-ttl{font-family:var(--kai); font-size:22px; letter-spacing:.24em; margin:0; font-weight:400}
+  .sec-head::after{content:""; flex:1; height:1px; background:var(--line-soft); transform:translateY(-4px)}
+
+  /* 画 */
+  .stage{margin:0}
+  .mount{
+    padding:clamp(12px,2.6vw,26px);
+    background:linear-gradient(170deg,#f0e7d6,#e7dcc7 60%,#eee4d2);
+    box-shadow:0 36px 60px -34px rgba(58,42,26,.6), 0 0 0 1px rgba(255,255,255,.55) inset;
+    position:relative;
+  }
+  .mount::after{
+    content:""; position:absolute; inset:clamp(6px,1.3vw,13px);
+    border:1px solid rgba(120,95,60,.18); pointer-events:none;
+  }
+  .frame{position:relative; display:block; cursor:zoom-in; overflow:hidden; background:#e8e0cf}
+  .frame img{display:block; width:100%; height:auto}
+  .tools{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:18px}
+  .ghost{
+    border:1px solid var(--line); background:transparent; color:var(--ink-2);
+    font-family:var(--serif); font-size:13px; letter-spacing:.12em; padding:7px 14px;
+    border-radius:2px; cursor:pointer; transition:.25s;
+  }
+  .ghost:hover{border-color:var(--zhu); color:var(--zhu)}
+  .cap{font-size:12.5px; color:var(--ink-3); letter-spacing:.14em; margin-top:14px; text-align:center}
+  .hint{font-size:12px; color:var(--ink-3); margin-left:auto; letter-spacing:.06em}
+
+  /* 画里三件物 */
+  .three{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:30px; background:var(--line-soft)}
+  .three div{background:var(--paper); padding:20px 16px; min-width:0}
+  .three .k{font-family:var(--kai); font-size:15px; letter-spacing:.2em}
+  .three .k b{color:var(--zhu); font-weight:400; margin-right:8px}
+  .three p{margin:8px 0 0; font-size:14px; line-height:1.85; color:#4a443d}
+
+  /* 诗 */
+  .poem-wrap{text-align:center; padding:clamp(26px,5vw,44px) 0 clamp(16px,3vw,26px)}
+  .poem{display:inline-block; text-align:left}
+  .poem button{
+    display:block; width:100%; text-align:left; background:none; border:0; cursor:pointer;
+    font-family:var(--kai); font-size:clamp(22px,4.6vw,30px); letter-spacing:.2em;
+    color:var(--ink); line-height:2.15; padding:2px 0 2px 18px; position:relative;
+    transition:color .3s, transform .3s;
+  }
+  .poem button::before{
+    content:""; position:absolute; left:0; top:50%; transform:translateY(-50%) scaleY(0);
+    width:2px; height:1.3em; background:var(--zhu); transition:transform .3s; border-radius:1px;
+  }
+  .poem button:hover{color:var(--zhu); transform:translateX(3px)}
+  .poem button.on{color:var(--zhu)}
+  .poem button.on::before{transform:translateY(-50%) scaleY(1)}
+  .gloss{
+    max-width:560px; margin:0 auto; min-height:86px;
+    border-top:1px solid var(--line-soft); padding-top:18px;
+    font-size:14.5px; line-height:1.95; color:var(--ink-2); text-align:left;
+    transition:opacity .35s;
+  }
+  .gloss .tip{color:var(--ink-3); font-size:13px; letter-spacing:.08em}
+  .gloss b{color:var(--zhe); font-weight:400}
+  .rhyme{font-size:12px; color:var(--ink-3); letter-spacing:.16em; text-align:center; margin-top:18px}
+
+  /* 析 */
+  .lead{font-size:17px; color:var(--ink-2); margin:0 0 26px}
+  .strata{border-top:1px solid var(--line-soft)}
+  .stratum{display:grid; grid-template-columns:76px 1fr; gap:20px; padding:20px 0; border-bottom:1px solid var(--line-soft)}
+  .stratum .sl{font-family:var(--kai); font-size:14px; letter-spacing:.2em; color:var(--zhu); padding-top:3px}
+  .stratum p{margin:0; font-size:16px; line-height:1.9; min-width:0}
+  .pull{
+    margin:34px 0 0; padding:26px 0; text-align:center;
+    font-family:var(--kai); font-size:clamp(19px,3.6vw,24px); letter-spacing:.1em; line-height:1.9;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line); color:var(--ink);
+  }
+  .pull span{display:block; font-family:var(--serif); font-size:11.5px; letter-spacing:.3em; color:var(--zhu); margin-bottom:12px}
+
+  .fix-head{margin:52px 0 6px; font-family:var(--kai); font-size:15px; letter-spacing:.24em; color:var(--ink-2)}
+  .fix{display:grid; gap:12px; margin-top:18px}
+  .card{
+    display:grid; grid-template-columns:44px 1fr auto; gap:16px; align-items:start;
+    background:var(--paper-2); border:1px solid var(--line-soft); padding:20px 20px 18px;
+    position:relative; transition:.3s;
+  }
+  .card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:transparent; transition:.3s}
+  .card:hover{border-color:var(--line); transform:translateY(-1px)}
+  .card.done::before{background:var(--zhu)}
+  .num{
+    width:32px; height:32px; border:1px solid var(--zhe); color:var(--zhe);
+    display:grid; place-items:center; font-family:var(--kai); font-size:15px; border-radius:1px;
+  }
+  .card h3{margin:0 0 6px; font-family:var(--kai); font-size:16.5px; font-weight:400; letter-spacing:.08em}
+  .card p{margin:0; font-size:14.5px; line-height:1.9; color:var(--ink-2)}
+  .mark{
+    border:1px solid var(--line); background:transparent; color:var(--ink-3);
+    font-size:11.5px; letter-spacing:.1em; padding:5px 10px; border-radius:1px; cursor:pointer;
+    white-space:nowrap; transition:.25s; font-family:var(--serif);
+  }
+  .mark:hover{border-color:var(--zhe); color:var(--zhe)}
+  .card.done .mark{border-color:var(--zhu); color:var(--zhu)}
+
+  /* 画外 */
+  .outer{margin-top:clamp(50px,8vw,84px); padding-top:34px; border-top:1px solid var(--line)}
+  .decl{font-size:13.5px; line-height:2; color:var(--ink-3); margin:0 0 30px}
+  .qr-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .qr{background:var(--paper-2); border:1px solid var(--line-soft); padding:18px 18px 16px; text-align:center}
+  .qr .ph{height:206px; display:flex; align-items:center; justify-content:center; margin-bottom:12px}
+  .qr .ph img{max-width:100%; max-height:206px; width:auto; height:auto; display:block; border:1px solid var(--line-soft); background:#fff}
+  .qr .t{font-size:13px; letter-spacing:.14em; color:var(--ink-2)}
+  .copy-line{
+    margin:22px 0 0; display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+    font-size:15px; letter-spacing:.08em;
+  }
+  .copy-line code{font-family:var(--serif); font-size:15px; letter-spacing:.12em; color:var(--ink)}
+  .mini{
+    border:1px solid var(--line); background:transparent; color:var(--ink-2); cursor:pointer;
+    font-family:var(--serif); font-size:11.5px; letter-spacing:.1em; padding:4px 9px; border-radius:1px; transition:.25s;
+  }
+  .mini:hover{border-color:var(--zhu); color:var(--zhu)}
+  .gz{text-align:center; margin:26px 0 0; font-size:14px; color:var(--ink-2); letter-spacing:.06em}
+  .gz b{font-family:var(--kai); font-weight:400; color:var(--ink); letter-spacing:.1em}
+
+  .cangpan{margin-top:36px; border:1px solid var(--line); background:linear-gradient(180deg,#fbf7ee,#f4ecdd); padding:clamp(22px,4vw,32px)}
+  .cangpan .tag{font-size:11.5px; letter-spacing:.3em; color:var(--zhu)}
+  .cangpan h3{margin:10px 0 14px; font-family:var(--kai); font-size:21px; font-weight:400; letter-spacing:.14em}
+  .cangpan p{margin:0 0 12px; font-size:14.5px; line-height:1.95; color:var(--ink-2)}
+  .cta{
+    display:inline-flex; align-items:center; gap:10px; margin-top:10px;
+    background:var(--ink); color:var(--paper-2); text-decoration:none;
+    font-size:14px; letter-spacing:.14em; padding:12px 22px; border-radius:2px;
+    transition:.3s;
+  }
+  .cta:hover{background:var(--zhu); transform:translateY(-1px)}
+  .cta svg{width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.6}
+  .url{margin-top:14px; font-size:11.5px; color:var(--ink-3); word-break:break-all; letter-spacing:.02em}
+  .disclaimer{margin-top:26px; font-size:11.5px; line-height:1.9; color:var(--ink-3); border-top:1px solid var(--line-soft); padding-top:16px}
+
+  footer{max-width:var(--maxw); margin:0 auto; padding:30px clamp(20px,5vw,28px) 56px; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-3); letter-spacing:.1em}
+
+  /* 灯箱 */
+  .lb{position:fixed; inset:0; z-index:80; background:#141110; display:flex; flex-direction:column; opacity:0; pointer-events:none; transition:opacity .35s}
+  .lb.on{opacity:1; pointer-events:auto}
+  .lb-bar{display:flex; align-items:center; gap:12px; padding:12px 18px; color:rgba(242,236,224,.72); font-size:12.5px; letter-spacing:.16em}
+  .lb-bar .sp{margin-left:auto; display:flex; gap:8px; align-items:center}
+  .lb-btn{background:transparent; border:1px solid rgba(242,236,224,.25); color:rgba(242,236,224,.8); width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:15px; line-height:1; transition:.25s}
+  .lb-btn:hover{border-color:rgba(242,236,224,.7); color:#fff}
+  .lb-view{flex:1; overflow:hidden; display:grid; place-items:center; cursor:grab}
+  .lb-view.drag{cursor:grabbing}
+  .lb-view img{max-width:calc(100vw - 56px); max-height:calc(100vh - 150px); width:auto; height:auto; transform-origin:center center; will-change:transform; user-select:none; -webkit-user-drag:none}
+  .lb-tip{padding:10px 18px 22px; text-align:center; font-size:11.5px; color:rgba(242,236,224,.45); letter-spacing:.14em}
+
+  /* 入场 */
+  [data-reveal]{opacity:0; transform:translateY(16px); transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1)}
+  [data-reveal].in{opacity:1; transform:none}
+
+  @media (max-width:640px){
+    body{font-size:16px}
+    .nav a{display:none}
+    .nav .icon-btn{display:grid}
+    .three{grid-template-columns:1fr}
+    .stratum{grid-template-columns:1fr; gap:6px}
+    .card{grid-template-columns:36px 1fr; gap:12px}
+    .card .mark{grid-column:2; justify-self:start; margin-top:4px}
+    .qr-grid{grid-template-columns:1fr 1fr}
+    .hint{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important; transition:none!important}
+    [data-reveal]{opacity:1; transform:none}
+  }
+  @media print{
+    body{background:#fff; font-size:11.5pt}
+    #bar,.topbar,.tools,.lb,.hint,.mark,.mini,.copy-line .mini{display:none!important}
+    .mount{box-shadow:none; padding:8px}
+    section{padding-top:22pt; page-break-inside:avoid}
+    .cta{border:1px solid #000; background:#fff; color:#000}
+    .cangpan{background:#fff}
+  }
+</style>
+<noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<header class="topbar" id="topbar">
+  <div class="brand">铁未成器</div>
+  <nav class="nav">
+    <a href="#art">画</a>
+    <a href="#poem">诗</a>
+    <a href="#read">析</a>
+    <a href="#outer">画外</a>
+    <button class="icon-btn" id="print" title="打印 / 存为 PDF" aria-label="打印">
+      <svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M7 15h10v6H7z"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+  <div class="hero" data-reveal>
+    <div class="kicker">八 字 成 象</div>
+    <h1>铁未成器</h1>
+    <p class="sub">一柄未开刃的刀，一条不来舟的江</p>
+    <div class="rule"></div>
+    <div class="meta">绢本设色 · 丙午孟冬 · 印「象」</div>
+  </div>
+
+  <section id="art">
+    <div class="sec-head" data-reveal>
+      <span class="sec-no">壹</span><h2 class="sec-ttl">画</h2>
+    </div>
+
+    <figure class="stage" id="stage" data-view="color" data-reveal>
+      <div class="mount">
+        <div class="frame" id="frame" role="button" tabindex="0" aria-label="点击放大画面">
+          <img id="imgColor" src="@@SETSE@@" alt="青绿淡彩山水：崖顶一柄未开刃的长刀，崖下大江，对岸疏林，下方横题四句诗">
+        </div>
+      </div>
+      <div class="tools">
+        <button class="ghost" id="zoomBtn">放大细看</button>
+        <button class="ghost" id="saveBtn">保存图片</button>
+        <span class="hint">点画面可放大，滚轮缩放、拖动移视</span>
+      </div>
+    </figure>
+
+    <div class="three" data-reveal>
+      <div><div class="k"><b>刀</b>我</div><p>一柄未开刃的长刀，刃口钝重，覆一层薄霜。有锋，未成器。</p></div>
+      <div><div class="k"><b>林</b>求</div><p>对岸疏林枝干如戟，满目可望而不可即。是你要做成的那件事。</p></div>
+      <div><div class="k"><b>江</b>障</div><p>江面薄雾，倒影比实物淡一层。无桥，亦无舟。</p></div>
+    </div>
+  </section>
+
+  <section id="poem">
+    <div class="sec-head" data-reveal>
+      <span class="sec-no">贰</span><h2 class="sec-ttl">诗</h2>
+    </div>
+
+    <div class="poem-wrap" data-reveal>
+      <div class="poem" id="poem">
+        <button data-i="0">石上无根铁一枝，</button>
+        <button data-i="1">江心倒影万山迟。</button>
+        <button data-i="2">风来不问谁磨刃，</button>
+        <button data-i="3">只把寒光借月知。</button>
+      </div>
+      <div class="gloss" id="gloss">
+        <span class="tip">点一句，看它在画里指什么。</span>
+      </div>
+      <div class="rhyme">枝 · 迟 · 知　— 一韵到底</div>
+    </div>
+
+    <div style="text-align:center;margin-top:22px" data-reveal>
+      <button class="ghost" id="copyPoem">复制这首诗</button>
+    </div>
+  </section>
+
+  <section id="read">
+    <div class="sec-head" data-reveal>
+      <span class="sec-no">叁</span><h2 class="sec-ttl">析</h2>
+    </div>
+
+    <p class="lead" data-reveal>不说吉凶，只说一件事：你手上有什么、想要什么、卡在哪。</p>
+
+    <div class="strata" data-reveal>
+      <div class="stratum">
+        <div class="sl">手 上</div>
+        <p>你手上其实有一件真东西——一把能用的刀，只是还没开刃。</p>
+      </div>
+      <div class="stratum">
+        <div class="sl">想 要</div>
+        <p>你真正想要的是对岸那一片林子：做成一件事、被认下来、把本事换成实实在在的东西。</p>
+      </div>
+      <div class="stratum">
+        <div class="sl">卡 在</div>
+        <p>刀在崖上，林在江对岸，中间没有桥也没有船——你有本事、有目标，缺的是把两者连起来的那条路。</p>
+      </div>
+    </div>
+
+    <div class="pull" data-reveal>
+      <span>核 心 矛 盾</span>
+      手里有利刃，刃下无石；<br>万木在对岸，舟不来。
+    </div>
+
+    <div class="fix-head" data-reveal>破 局 三 条</div>
+    <div class="fix">
+      <article class="card" data-fix="0" data-reveal>
+        <div class="num">一</div>
+        <div>
+          <h3>先别急着过江</h3>
+          <p>把崖上这块地做深：已有的客户、已有的手艺，再往下挖一层。追新岸口要重新渡一次江，挖深只需再往下三尺。</p>
+        </div>
+        <button class="mark" data-mark="0">记 下</button>
+      </article>
+
+      <article class="card" data-fix="1" data-reveal>
+        <div class="num">二</div>
+        <div>
+          <h3>缺的不是火，是「磨」这个动作</h3>
+          <p>找一个能挑你毛病的人——同行、客户、比你狠的前辈，定期把作品交出去挨批。这就是你的磨石，不必等谁来点火。</p>
+        </div>
+        <button class="mark" data-mark="1">记 下</button>
+      </article>
+
+      <article class="card" data-fix="2" data-reveal>
+        <div class="num">三</div>
+        <div>
+          <h3>这周挑一件拖了很久的小事</h3>
+          <p>做到能拿出手为止，做完就发出去，不等完美。刃是一点点磨出来的，不是等出来的。</p>
+        </div>
+        <button class="mark" data-mark="2">记 下</button>
+      </article>
+    </div>
+  </section>
+
+  <section id="outer" class="outer">
+    <div class="sec-head" data-reveal>
+      <span class="sec-no">肆</span><h2 class="sec-ttl">画外</h2>
+    </div>
+
+    <p class="decl" data-reveal>
+      本页取象出自「盘叔盲派」技能包，基于段建业盲派体系，融夏仲奇、苏国圣、高德臣三派；画面由生图模型绘制，
+      题诗、落款、印章与白话解析由本地脚本与人工合成。不判吉凶，只给结构与出路。
+    </p>
+
+    <div class="qr-grid" data-reveal>
+      <div class="qr">
+        <div class="ph"><img src="@@APPR@@" alt="赞赏码：野生你盘叔"></div>
+        <div class="t">赞 赏 码</div>
+      </div>
+      <div class="qr">
+        <div class="ph"><img src="@@WECHAT@@" alt="微信名片：盘叔"></div>
+        <div class="t">微 信 名 片</div>
+      </div>
+    </div>
+
+    <div class="copy-line" data-reveal>
+      微信：<code id="wx">cpms1988</code>
+      <button class="mini" id="copyWx">复 制</button>
+    </div>
+
+    <p class="gz" data-reveal>更多命理玄学 AI 技能与干货，关注公众号 <b>【野生你盘叔】</b></p>
+
+    <div class="cangpan" data-reveal>
+      <div class="tag">苍 盘 命 书</div>
+      <h3>十个章节，数万字，把结构一层层拆开</h3>
+      <p>如果你对这个命盘的体用做功还有疑惑，可以试试盘叔历时半年、以数千当代真人命例打造的「苍盘命书」智能体。它靠独创的验盘算法做三重交叉校验，不靠模棱两可的话术让你自己对号入座。</p>
+      <p>十个章节、数万字，配合数据表格与趋势图，把八字结构、性格底层、人生阶段与往后可能的方向，一步步拆解清楚。</p>
+      <p>如果你也想看看，自己的八字背后到底藏着怎样的人生轨迹——</p>
+      <a class="cta" href="https://mp.weixin.qq.com/s/9NFaItizyhEpjDzmTyEcPQ" target="_blank" rel="noopener">
+        报名【苍盘命书免费体验官】
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <div class="url">直通链接：https://mp.weixin.qq.com/s/9NFaItizyhEpjDzmTyEcPQ</div>
+    </div>
+
+    <p class="disclaimer" data-reveal>
+      本节为独立推广内容，不是命理判断或命盘资料。传统术数供文化研究与娱乐参考，不构成人生决策依据。
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <span>八字成象 · 庚金坐戌</span>
+  <span>单文件报告，可离线打开 · 2026.11</span>
+</footer>
+
+<!-- 灯箱 -->
+<div class="lb" id="lb" aria-hidden="true">
+  <div class="lb-bar">
+    <span>铁 未 成 器</span>
+    <div class="sp">
+      <button class="lb-btn" id="lbOut" aria-label="缩小">−</button>
+      <span id="lbPct" style="min-width:44px;text-align:center">100%</span>
+      <button class="lb-btn" id="lbIn" aria-label="放大">+</button>
+      <button class="lb-btn" id="lbClose" aria-label="关闭">×</button>
+    </div>
+  </div>
+  <div class="lb-view" id="lbView"><img id="lbImg" alt="放大画面"></div>
+  <div class="lb-tip">滚轮缩放 · 拖动移视 · 双击复位 · Esc 关闭</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- 进度条 / 顶栏 ---------- */
+  var bar = document.getElementById('bar');
+  var topbar = document.getElementById('topbar');
+  function onScroll(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h * 100) : 0) + '%';
+    topbar.classList.toggle('on', window.scrollY > 60);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- 入场 ---------- */
+  var els = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+  // 兜底：若观察器未生效（部分内嵌浏览器/打印），1 秒后直接显影
+  setTimeout(function(){
+    if (!document.querySelector('[data-reveal].in')) {
+      els.forEach(function(el){ el.classList.add('in'); });
+    }
+  }, 900);
+  // 打印前全部显影，避免导出的 PDF 缺内容
+  window.addEventListener('beforeprint', function(){
+    els.forEach(function(el){ el.classList.add('in'); });
+  });
+
+  var stage = document.getElementById('stage');
+
+  /* ---------- 灯箱 ---------- */
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'),
+      lbView = document.getElementById('lbView'), lbPct = document.getElementById('lbPct');
+  var s = 1, tx = 0, ty = 0, dragging = null;
+
+  function apply(){
+    lbImg.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+    lbPct.textContent = Math.round(s * 100) + '%';
+  }
+  function openLb(){
+    lbImg.src = document.getElementById('imgColor').src;
+    s = 1; tx = 0; ty = 0; apply();
+    lb.classList.add('on'); lb.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb(){
+    lb.classList.remove('on'); lb.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('frame').addEventListener('click', openLb);
+  document.getElementById('frame').addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(); }
+  });
+  document.getElementById('zoomBtn').addEventListener('click', openLb);
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbIn').addEventListener('click', function(){ s = Math.min(5, s + 0.35); apply(); });
+  document.getElementById('lbOut').addEventListener('click', function(){ s = Math.max(1, s - 0.35); if (s === 1){ tx = 0; ty = 0; } apply(); });
+  lbView.addEventListener('dblclick', function(){ s = 1; tx = 0; ty = 0; apply(); });
+  lbView.addEventListener('wheel', function(e){
+    e.preventDefault();
+    s = Math.min(5, Math.max(1, s + (e.deltaY < 0 ? 0.16 : -0.16)));
+    if (s === 1) { tx = 0; ty = 0; }
+    apply();
+  }, {passive:false});
+  lbView.addEventListener('pointerdown', function(e){
+    if (s <= 1) return;
+    dragging = {x:e.clientX, y:e.clientY, tx:tx, ty:ty};
+    lbView.classList.add('drag');
+    lbView.setPointerCapture(e.pointerId);
+  });
+  lbView.addEventListener('pointermove', function(e){
+    if (!dragging) return;
+    tx = dragging.tx + (e.clientX - dragging.x);
+    ty = dragging.ty + (e.clientY - dragging.y);
+    apply();
+  });
+  lbView.addEventListener('pointerup', function(){ dragging = null; lbView.classList.remove('drag'); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+  });
+
+  /* ---------- 存图 ---------- */
+  document.getElementById('saveBtn').addEventListener('click', function(){
+    var src = document.getElementById('imgColor').src;
+    var a = document.createElement('a');
+    a.href = src;
+    a.download = '铁未成器_设色.jpg';
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  /* ---------- 诗：点句出解 ---------- */
+  var glossData = [
+    '<b>石</b>是崖，<b>铁</b>是刀。主象与立足都落在一件具体的物上——不是「一片山」，是一柄刀。',
+    '<b>江心倒影</b>是水旺而空，<b>万山迟</b>是满盘是木却在彼岸。虚与实相对，才是真矛盾。',
+    '<b>风来不问</b>——外力来了，却不回答「谁磨刃」，正因为缺火。问而不答，是一句留白。',
+    '<b>借月知</b>——不求对岸之林，只自照。所求是自成其器，不在外财。'
+  ];
+  var gloss = document.getElementById('gloss');
+  document.querySelectorAll('#poem button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var i = +b.dataset.i;
+      document.querySelectorAll('#poem button').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      gloss.style.opacity = 0;
+      setTimeout(function(){
+        gloss.innerHTML = glossData[i];
+        gloss.style.opacity = 1;
+      }, 140);
+    });
+  });
+
+  /* ---------- 复制 ---------- */
+  function copy(text, btn, label){
+    var done = function(){
+      var old = btn.textContent;
+      btn.textContent = '已复制';
+      btn.disabled = true;
+      setTimeout(function(){ btn.textContent = old; btn.disabled = false; }, 1500);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e){}
+      ta.remove();
+    }
+  }
+  var poemText = '石上无根铁一枝，\n江心倒影万山迟。\n风来不问谁磨刃，\n只把寒光借月知。';
+  document.getElementById('copyPoem').addEventListener('click', function(){ copy(poemText, this); });
+  document.getElementById('copyWx').addEventListener('click', function(){ copy('cpms1988', this); });
+
+  /* ---------- 破局：记下 ---------- */
+  function key(i){ return 'cx-fix-' + i; }
+  document.querySelectorAll('.card').forEach(function(card){
+    var i = card.dataset.fix, btn = card.querySelector('.mark');
+    var saved = null;
+    try { saved = localStorage.getItem(key(i)); } catch(e){}
+    if (saved === '1') { card.classList.add('done'); btn.textContent = '已 记 下'; }
+    btn.addEventListener('click', function(){
+      var on = !card.classList.contains('done');
+      card.classList.toggle('done', on);
+      btn.textContent = on ? '已 记 下' : '记 下';
+      try { localStorage.setItem(key(i), on ? '1' : '0'); } catch(e){}
+    });
+  });
+
+  /* ---------- 打印 ---------- */
+  document.getElementById('print').addEventListener('click', function(){ window.print(); });
+})();
+</script>
+</body>
+</html>
