@@ -77,6 +77,7 @@ psbzcx/
 │   └── report/
 │       ├── build.py             # 压图 + base64 内嵌 → 单文件 HTML
 │       └── 报告模板.html         # 只改文字的版式模板（3 个图片占位符）
+├── assets/                      # 赞赏码 + 微信名片（build.py 默认取这里，可替换）
 └── examples/庚戌坐戌/            # 象稿 / 提示词 / 无字底片 / 成品图 / HTML 报告
 ```
 
@@ -88,10 +89,10 @@ git clone https://github.com/watchkd/psbzcx.git ~/.workbuddy/skills/ps-bazi-chen
 
 或直接把这个目录拷进 `~/.workbuddy/skills/ps-bazi-chengxiang/`（目录名须与 `SKILL.md` 里的 `name` 一致）。
 
-**依赖**（可选，缺了仍能出图出诗，只是少两样便利）：
+**依赖**：
 
-- `ps-zonglun` —— 只给生日时用它的 `tools/paipan.py` 排四柱；报告里的赞赏码与微信名片取 `ps-zonglun/references/assets/`。这两个文件**不在本仓库内**，`build.py` 的 `--appreciation/--wechat` 可指向任意图片。
-- Python 3 ＋ `Pillow`（`pip install pillow`）—— 两个脚本都只依赖它，纯本地、不联网。
+- Python 3 ＋ `Pillow`（`pip install pillow`）—— 两个脚本只依赖它，纯本地、不联网。
+- `ps-zonglun`（**可选**）—— 只在「只给生日、需要排四柱」时用到它的 `tools/paipan.py`；有现成四柱就不需要。
 
 若与多个命理技能共存，建议只让入口参与自动调度：
 
@@ -127,9 +128,10 @@ python tools/tieshi.py --image 图_无字.png --layout h \
 ```bash
 python tools/report/build.py \
   --tpl tools/report/报告模板.html --out 成象报告.html \
-  --color 成象_题诗.png \
-  --appreciation 赞赏码.jpg --wechat 微信名片.jpg
+  --color 成象_题诗.png
 ```
+
+赞赏码与微信名片**默认取 `assets/`**，不传参即可；`assets/` 里换成你自己的，或用 `--appreciation --wechat` 指别的图。**缺图时那张卡片会整块从报告里去掉**，不会留破图。
 
 图片自动压到 1024／520／440 宽再 base64 内嵌，单文件约 550KB，断网、转发、打印都能用。模板里**只改文字**，结构与样式不动。已内置交互：点画放大（滚轮缩放、拖动移视、双击复位）、点诗句出注、破局「记下」（localStorage 留存）、复制诗句与微信号、存图、打印／存 PDF、手机端单栏。
 
@@ -148,7 +150,7 @@ python tools/report/build.py \
 
 - 命理属传统文化范畴，本技能产出的是**图像与文字作品**，不是预测，不构成任何决策、医疗、投资建议。
 - 取象语汇承自盘叔盲派技能包（段氏理象学类象、象法七原则），本仓库只做「译象为画＋题诗＋白话」这一层，不含断法正文。
-- 报告模板内的赞赏码、微信号与体验邀请链接，是作者本人的；替换成你自己的再发布。
+- `assets/` 内的赞赏码与微信号、报告里的体验邀请链接均为作者本人的；**替换成你自己的再发布**。
 
 ## 九、许可
 

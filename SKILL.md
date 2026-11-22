@@ -1,7 +1,7 @@
 ---
 name: ps-bazi-chengxiang
 description: 当用户想把八字「画出来」「生成一张图」「八字成象」「给这个命配一幅画/配一首诗」，或说"用盲派象法把这个命糅成画面"时使用。走盲派取象法，把四柱拆成主象/功象/破象三层，译成一张青绿淡彩山水的提示词并出图，画面下方横题一首四句禅诗，另附一段不提干支、不用术语的白话解析（核心矛盾＋破局三条）。不做断命报告、不排大运细应期（那些走 ps-zonglun）；不问吉凶只求成象时也用它。
-version: 1.2.0
+version: 1.2.1
 ---
 
 # 八字成象（ps-bazi-chengxiang）
@@ -115,10 +115,10 @@ python ~/.workbuddy/skills/ps-bazi-chengxiang/tools/tieshi.py \
 python ~/.workbuddy/skills/ps-bazi-chengxiang/tools/report/build.py \
   --tpl ~/.workbuddy/skills/ps-bazi-chengxiang/tools/report/报告模板.html \
   --out "八字成象/<四柱>/成象报告.html" \
-  --color "八字成象/<四柱>/成象_题诗_设色.png" \
-  --appreciation ~/.workbuddy/skills/ps-zonglun/references/assets/appreciation.jpg \
-  --wechat ~/.workbuddy/skills/ps-zonglun/references/assets/wechat_qr.jpg
+  --color "八字成象/<四柱>/成象_题诗_设色.png"
 ```
+
+- 赞赏码与微信名片**默认取技能目录下的 `assets/`**，不传参即可；缺图时那张卡片会整块从报告里去掉，不留破图。要换成别的，加 `--appreciation` / `--wechat` 指过去。
 
 - 模板里**只改文字**：标题／副标题／meta、四句诗、四句「点句出解」、三段解析、三条破局、画里三件物。结构与样式不动。
 - 图片全部 base64 内嵌（自动压到 1024/520/440 宽），单文件约 550KB，离线、转发、打印都能用。
