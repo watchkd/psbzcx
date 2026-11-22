@@ -225,9 +225,12 @@
   .lb-view img{max-width:calc(100vw - 56px); max-height:calc(100vh - 150px); width:auto; height:auto; transform-origin:center center; will-change:transform; user-select:none; -webkit-user-drag:none}
   .lb-tip{padding:10px 18px 22px; text-align:center; font-size:11.5px; color:rgba(242,236,224,.45); letter-spacing:.14em}
 
-  /* 入场 */
-  [data-reveal]{opacity:0; transform:translateY(16px); transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1)}
-  [data-reveal].in{opacity:1; transform:none}
+  /* 入场 —— v1.3.2：默认可见，只有脚本真的跑起来才隐藏后再淡入。
+     旧写法把 [data-reveal] 直接设成 opacity:0，遇到屏蔽内联脚本的预览器
+     （聊天窗口内嵌预览、部分阅读器、CSP 沙箱）整页就是一片空白，表现为「报告点不开」。 */
+  [data-reveal]{opacity:1; transform:none}
+  html.js [data-reveal]{opacity:0; transform:translateY(16px); transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1)}
+  html.js [data-reveal].in{opacity:1; transform:none}
 
   @media (max-width:640px){
     body{font-size:16px}
@@ -242,7 +245,7 @@
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important; transition:none!important}
-    [data-reveal]{opacity:1; transform:none}
+    html.js [data-reveal]{opacity:1!important; transform:none!important}
   }
   @media print{
     body{background:#fff; font-size:11.5pt}
@@ -254,6 +257,8 @@
   }
 </style>
 <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+<!-- v1.3.2：只有脚本能执行时才挂 .js，入场动画才生效；脚本被屏蔽则整页保持可见 -->
+<script>document.documentElement.className += ' js';</script>
 </head>
 <body>
 
